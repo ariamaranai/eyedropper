@@ -2,6 +2,7 @@ addEventListener("keydown", () => (new EyeDropper).open()
   .then(({ sRGBHex }) => {
     chrome.action.setBadgeBackgroundColor({ color: sRGBHex });
     chrome.action.setBadgeText({ text: " " });
+    chrome.action.setTitle({ title: sRGBHex });
     chrome.action.setPopup({ popup: "popup.htm" + sRGBHex });
     let windowId = +location.search.slice(1);
     chrome.windows.update(windowId, { focused: !0 });
