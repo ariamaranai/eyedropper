@@ -1,13 +1,14 @@
 addEventListener("keydown", () => (new EyeDropper).open()
-  .then(({ sRGBHex }) => {
-    chrome.action.setBadgeBackgroundColor({ color: sRGBHex });
+  .then(async c => {
+    let color = c.sRGBHex;
+    await navigator.clipboard.writeText(color);
+    chrome.action.setBadgeBackgroundColor({ color });
     chrome.action.setBadgeText({ text: " " });
-    chrome.action.setTitle({ title: sRGBHex });
-    chrome.action.setPopup({ popup: "popup.htm" + sRGBHex });
+    chrome.action.setTitle({ title: color });
+    chrome.action.setPopup({ popup: "popup.htm" + color });
     let windowId = +location.search.slice(1);
     chrome.windows.update(windowId, { focused: !0 });
     chrome.action.openPopup({ windowId });
-    navigator.clipboard.writeText(sRGBHex);
   }).finally(close),
   { capture: !0, once: !0 }
 );

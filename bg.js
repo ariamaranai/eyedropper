@@ -4,6 +4,7 @@ chrome.action.onClicked.addListener(tab =>
     type: "popup",
     width: 1,
     height: 1,
+    left: 9999,
     top: 9999
   }
 ));
