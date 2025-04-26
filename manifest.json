@@ -7,10 +7,8 @@
     "128": "128.png"
   },
   "permissions": [
+    "alarms",
     "debugger"
-  ],
-  "host_permissions": [
-    "<all_urls>"
   ],
   "background": {
     "service_worker": "bg.js"
