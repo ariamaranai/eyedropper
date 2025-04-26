@@ -1,5 +1,5 @@
-addEventListener("keydown", () => (new EyeDropper).open()
-  .then(async c => {
+addEventListener("keydown", () =>
+  (new EyeDropper).open().then(async c => {
     let color = c.sRGBHex;
     await navigator.clipboard.writeText(color);
     chrome.action.setBadgeBackgroundColor({ color });
@@ -10,7 +10,7 @@ addEventListener("keydown", () => (new EyeDropper).open()
     chrome.windows.update(windowId, { focused: !0 });
     chrome.action.openPopup({ windowId });
   }).finally(close),
-  { capture: !0, once: !0 }
+  1
 );
 chrome.tabs.getCurrent(tab => {
   let target = { tabId: tab.id };
