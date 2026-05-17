@@ -9,12 +9,12 @@ addEventListener("keydown", () =>
     let windowId = +location.search.slice(1);
     chrome.windows.update(windowId, { focused: !0 });
     chrome.action.openPopup({ windowId });
-    close()
+    return close()
   }).catch(close),
   1
 );
 chrome.tabs.getCurrent(tab => {
   let target = { tabId: tab.id };
   chrome.debugger.attach(target, "1.3");
-  chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", { type: "keyDown" }, () => chrome.debugger.detach(target));
+  return chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", { type: "keyDown" }, () => chrome.debugger.detach(target));
 });
