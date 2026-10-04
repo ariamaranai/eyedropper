@@ -1,20 +1,24 @@
-addEventListener("keydown", () =>
-  (new EyeDropper).open().then(async c => {
-    let color = c.sRGBHex;
-    await navigator.clipboard.writeText(color);
-    chrome.action.setBadgeBackgroundColor({ color });
-    chrome.action.setBadgeText({ text: " " });
-    chrome.action.setTitle({ title: color });
-    chrome.action.setPopup({ popup: "popup.htm" + color });
-    let windowId = +location.search.slice(1);
-    chrome.windows.update(windowId, { focused: !0 });
-    chrome.action.openPopup({ windowId });
-    return close()
-  }).catch(close),
-  1
-);
-chrome.tabs.getCurrent(tab => {
-  let target = { tabId: tab.id };
-  chrome.debugger.attach(target, "1.3");
-  return chrome.debugger.sendCommand(target, "Input.dispatchKeyEvent", { type: "keyDown" }, () => chrome.debugger.detach(target));
-});
+{
+  addEventListener("keydown", () =>
+    (new EyeDropper).open().then(({ sRGBHex }) => (
+      navigator.clipboard.writeText(sRGBHex).then(close),
+      action.setTitle({ title: sRGBHex }),
+      action.setBadgeText({ text: " " }),
+      action.setBadgeBackgroundColor({ color: sRGBHex }),
+      action.setPopup({ popup: "popup.htm" + sRGBHex }),
+      windows.update(tabs = +location.search.slice(1), { focused: !0 }),
+      action.openPopup({ windowId: tabs })
+    )).catch(close),
+    1
+  );
+  let { action, debugger: _debugger, tabs, windows } = chrome;
+  tabs.getCurrent(({ id }) => (
+    _debugger.attach({ tabId: id }, "1.3"),
+    _debugger.sendCommand(
+      { tabId: id },
+      "Input.dispatchKeyEvent",
+      { type: "keyDown" },
+      () => _debugger.detach({ tabId: id })
+    )
+  ));
+}
